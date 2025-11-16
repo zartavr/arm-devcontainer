@@ -60,14 +60,10 @@ EOT
 ENV PATH=/opt/clangd/bin:$PATH
 
 # Create 'user' account
-ARG USERNAME=developer
-ARG UID=1001
-ARG GID=$UID
+ARG USERNAME=ubuntu
 
 RUN <<EOT 
     apt-get update && apt-get install --no-install-recommends -y sudo
-    groupadd --gid $GID $USERNAME
-    useradd --uid $UID --gid $GID -m $USERNAME
     echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/${USERNAME}
     chmod 0440 /etc/sudoers.d/$USERNAME
     usermod -a -G plugdev ${USERNAME}
@@ -80,5 +76,5 @@ USER ${USERNAME}
 ARG OPENOCD_VERSION=0.12.0
 
 RUN <<EOT 
-    sudo apt install openocd -y
+    sudo apt install udev openocd -y
 EOT
